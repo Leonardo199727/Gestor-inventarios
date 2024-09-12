@@ -1,0 +1,120 @@
+.request-summary-container {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 4cm; /* Ajusta según sea necesario */
+}
+
+.request-summary-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.request-summary-table td {
+    padding: 8px;
+    border: 1px solid #ddd;
+}
+
+/* Barra superior fija */
+.top-container {
+    width: 100%;
+    height: 2cm;
+    background-color: #343a40;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Alinea el botón Salir a la derecha */
+    padding: 0 20px;
+    box-sizing: border-box;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+/* Botón para regresar */
+.logout-button {
+    background-color: #dc3545;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.logout-button:hover {
+    background-color: #c82333;
+}
+
+/* Estilo para la sección de búsqueda y materiales */
+.material-search-container {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Espaciado entre el input, lista y botón */
+}
+
+.material-search-container input {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+/* Botón para agregar material */
+.material-search-container button {
+    padding: 8px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.material-search-container button:hover {
+    background-color: #0056b3;
+}
+
+/* Estilo para la lista de materiales (sugerencias) */
+.materials-list {
+    margin-top: 0; /* Quita el margen superior para ajustar entre input y botón */
+}
+
+.materials-list ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0; /* Asegura que no haya margen adicional */
+}
+
+.materials-list li {
+    cursor: pointer;
+    padding: 5px;
+    border: 1px solid #ddd;
+    margin-bottom: 5px;
+}
+
+.materials-list li:hover {
+    background-color: #f1f1f1;
+}
+
+/* Título "Agregar material" */
+.request-summary-container h3 {
+    margin-top: 20px; /* Añadir espacio entre la tabla y el título */
+    font-size: 18px;
+    color: #333;
+    font-weight: 600;
+}
+
+.delete-button {
+    background-color: #c82333;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.delete-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
