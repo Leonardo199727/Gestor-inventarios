@@ -20,7 +20,6 @@ const Home = () => {
                         : 'Fecha no disponible',
                 };
             });
-            // Ordena las solicitudes por fecha de manera descendente
             const sortedData = data.sort((a, b) => b.fecha.localeCompare(a.fecha));
             setRequests(sortedData);
         });
@@ -32,11 +31,16 @@ const Home = () => {
         navigate('/login');
     };
 
+    // Función para navegar a la ventana de Profesores
+    const handleGoToProfesores = () => {
+        navigate('/profesores'); // Redirige a la ventana de Profesores
+    };
+
     return (
         <div className="home-container">
             <div className="top-container">
                 <div className="button-group">
-                    <button className="custom-button">Botón 1</button>
+                    <button className="custom-button" onClick={handleGoToProfesores}>Botón 1</button>
                     <button className="custom-button">Botón 2</button>
                 </div>
                 <button className="logout-button" onClick={handleLogout}>Salir</button>
