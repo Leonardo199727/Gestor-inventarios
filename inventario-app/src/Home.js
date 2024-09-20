@@ -14,7 +14,7 @@ const Home = () => {
                 const solicitudData = doc.data();
                 return {
                     id: doc.id,
-                    matricula: solicitudData.matricula,
+                    nombre: solicitudData.nombre, // Asegúrate de que el campo nombre esté disponible en la base de datos
                     fecha: solicitudData.fecha?.seconds 
                         ? new Date(solicitudData.fecha.seconds * 1000).toLocaleString() 
                         : 'Fecha no disponible',
@@ -36,12 +36,35 @@ const Home = () => {
         navigate('/profesores'); // Redirige a la ventana de Profesores
     };
 
+    // Función para navegar a la ventana de Eliminar Profesores
+    const handleGoToEliminarProfesores = () => {
+        navigate('/eliminar-profesores'); // Redirige a la ventana de Eliminar Profesores
+    };
+
+    
+    const handleGoToReportes = () => {
+        navigate('/materiales'); 
+    };
+
+   
+    const handleGoToConfiguracion = () => {
+        navigate('/configuracion'); // Redirige a la ventana de Configuración
+    };
+
+    // Función para navegar a la ventana de Estadísticas
+    const handleGoToEstadisticas = () => {
+        navigate('/estadisticas'); // Redirige a la ventana de Estadísticas
+    };
+
     return (
         <div className="home-container">
             <div className="top-container">
                 <div className="button-group">
-                    <button className="custom-button" onClick={handleGoToProfesores}>Botón 1</button>
-                    <button className="custom-button">Botón 2</button>
+                    <button className="custom-button" onClick={handleGoToProfesores}>Agregar Profesores</button>
+                    <button className="custom-button" onClick={handleGoToEliminarProfesores}>Eliminar Profesores</button>
+                    <button className="custom-button" onClick={handleGoToReportes}>Materiales</button>
+                    <button className="custom-button" onClick={handleGoToConfiguracion}></button>
+                    <button className="custom-button" onClick={handleGoToEstadisticas}>Estadísticas</button>
                 </div>
                 <button className="logout-button" onClick={handleLogout}>Salir</button>
             </div>
@@ -51,7 +74,7 @@ const Home = () => {
                     <thead>
                         <tr>
                             <th>ID Solicitud</th>
-                            <th>Matrícula</th>
+                            <th>Nombre</th>
                             <th>Fecha</th>
                         </tr>
                     </thead>
@@ -66,7 +89,7 @@ const Home = () => {
                                 <td>
                                     <Link to={`/request-summary/${request.id}`}>{request.id}</Link>
                                 </td>
-                                <td>{request.matricula}</td>
+                                <td>{request.nombre}</td>
                                 <td>{request.fecha}</td>
                             </tr>
                         ))}

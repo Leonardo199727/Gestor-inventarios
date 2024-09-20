@@ -1,62 +1,127 @@
 import React, { useEffect, useState } from 'react';
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import { collection, query, where, onSnapshot, addDoc } from 'firebase/firestore';
 import { db } from './firebase';
-import { useNavigate } from 'react-router-dom'; // Importa useNavigate para la navegación
+import { useNavigate } from 'react-router-dom';
 import './Profesores.css';
 
 const Profesores = () => {
-    const [carreras, setCarreras] = useState([]);
-    const [materias, setMaterias] = useState([]);
+    // Estados para el contenedor izquierdo
+    const [carrerasIzq, setCarrerasIzq] = useState([]);
+    const [materiasIzq, setMateriasIzq] = useState([]);
     const [profesores, setProfesores] = useState([]);
-    const [selectedCarrera, setSelectedCarrera] = useState('');
-    const [selectedMateria, setSelectedMateria] = useState('');
-    const navigate = useNavigate(); // Inicializa useNavigate
+    const [selectedCarreraIzq, setSelectedCarreraIzq] = useState('');
+    const [selectedMateriaIzq, setSelectedMateriaIzq] = useState('');
 
-    // Carga las carreras
+    // Estados para el contenedor derecho
+    const [carrerasDer, setCarrerasDer] = useState([]);
+    const [materiasDer, setMateriasDer] = useState([]);
+    const [newProfesorName, setNewProfesorName] = useState('');
+    const [selectedCarreraDer, setSelectedCarreraDer] = useState('');
+    const [selectedMateriaDer, setSelectedMateriaDer] = useState('');
+
+    // Estados para la notificación
+    const [notification, setNotification] = useState('');
+    const [notificationVisible, setNotificationVisible] = useState(false);
+
+    const navigate = useNavigate();
+
+    // Carga las carreras para el contenedor izquierdo
     useEffect(() => {
-        const fetchCarreras = async () => {
-            const carrerasCollection = collection(db, 'carreras');
-            const carrerasSnapshot = await getDocs(carrerasCollection);
-            const carrerasData = carrerasSnapshot.docs.map(doc => doc.data().nombre);
-            setCarreras(carrerasData);
-        };
+        const carrerasCollection = collection(db, 'carreras');
+        const unsubscribe = onSnapshot(carrerasCollection, (snapshot) => {
+            const carrerasData = snapshot.docs.map(doc => doc.data().nombre);
+            setCarrerasIzq(carrerasData);
+        });
 
-        fetchCarreras();
+        return () => unsubscribe();
     }, []);
 
-    // Carga las materias cuando cambia la carrera seleccionada
+    // Carga las materias cuando cambia la carrera seleccionada en el contenedor izquierdo
     useEffect(() => {
-        const fetchMaterias = async () => {
-            if (!selectedCarrera) return;
+        if (!selectedCarreraIzq) return;
 
-            const materiasCollection = collection(db, 'materias');
-            const q = query(materiasCollection, where('carrera', '==', selectedCarrera));
-            const materiasSnapshot = await getDocs(q);
-            const materiasData = materiasSnapshot.docs.map(doc => ({ nombre: doc.data().nombre }));
-            setMaterias(materiasData);
-        };
+        const materiasCollection = collection(db, 'materias');
+        const q = query(materiasCollection, where('carrera', '==', selectedCarreraIzq));
+        const unsubscribe = onSnapshot(q, (snapshot) => {
+            const materiasData = snapshot.docs.map(doc => ({ nombre: doc.data().nombre }));
+            setMateriasIzq(materiasData);
+        });
 
-        fetchMaterias();
-    }, [selectedCarrera]);
+        return () => unsubscribe();
+    }, [selectedCarreraIzq]);
 
-    // Carga los profesores cuando cambia la materia seleccionada
+    // Carga los profesores cuando cambia la materia seleccionada en el contenedor izquierdo
     useEffect(() => {
-        const fetchProfesores = async () => {
-            if (!selectedMateria) return;
+        if (!selectedMateriaIzq) return;
 
-            const profesoresCollection = collection(db, 'profesores');
-            const q = query(profesoresCollection, where('materia', '==', selectedMateria));
-            const profesoresSnapshot = await getDocs(q);
-            const profesoresData = profesoresSnapshot.docs.map(doc => doc.data());
+        const profesoresCollection = collection(db, 'profesores');
+        const q = query(profesoresCollection, where('materia', '==', selectedMateriaIzq));
+        const unsubscribe = onSnapshot(q, (snapshot) => {
+            const profesoresData = snapshot.docs.map(doc => doc.data());
             setProfesores(profesoresData);
-        };
+        });
 
-        fetchProfesores();
-    }, [selectedMateria]);
+        return () => unsubscribe();
+    }, [selectedMateriaIzq]);
+
+    // Carga las carreras para el contenedor derecho
+    useEffect(() => {
+        const carrerasCollection = collection(db, 'carreras');
+        const unsubscribe = onSnapshot(carrerasCollection, (snapshot) => {
+            const carrerasData = snapshot.docs.map(doc => doc.data().nombre);
+            setCarrerasDer(carrerasData);
+        });
+
+        return () => unsubscribe();
+    }, []);
+
+    // Carga las materias cuando cambia la carrera seleccionada en el contenedor derecho
+    useEffect(() => {
+        if (!selectedCarreraDer) return;
+
+        const materiasCollection = collection(db, 'materias');
+        const q = query(materiasCollection, where('carrera', '==', selectedCarreraDer));
+        const unsubscribe = onSnapshot(q, (snapshot) => {
+            const materiasData = snapshot.docs.map(doc => ({ nombre: doc.data().nombre }));
+            setMateriasDer(materiasData);
+        });
+
+        return () => unsubscribe();
+    }, [selectedCarreraDer]);
+
+    // Función para agregar un nuevo profesor
+    const handleAddProfesor = async () => {
+        if (!selectedCarreraDer || !selectedMateriaDer || !newProfesorName) {
+            alert('Por favor, selecciona una carrera, una materia y escribe el nombre del profesor.');
+            return;
+        }
+
+        try {
+            await addDoc(collection(db, 'profesores'), {
+                nombre: newProfesorName,
+                carrera: selectedCarreraDer,
+                materia: selectedMateriaDer
+            });
+
+            // Resetea el campo de nombre del profesor después de agregarlo
+            setNewProfesorName('');
+
+            // Muestra la notificación
+            setNotification('Profesor agregado exitosamente');
+            setNotificationVisible(true);
+
+            // Oculta la notificación después de 3 segundos
+            setTimeout(() => {
+                setNotificationVisible(false);
+            }, 3000);
+        } catch (error) {
+            console.error('Error al agregar profesor: ', error);
+        }
+    };
 
     // Maneja el botón de regreso
     const handleGoBack = () => {
-        navigate('/home'); // Cambia la ruta a '/home'
+        navigate('/home');
     };
 
     return (
@@ -68,16 +133,18 @@ const Profesores = () => {
             </div>
 
             <div className="content-wrapper">
+                {/* Contenedor izquierdo */}
                 <div className="left-container">
+                    <h2 className="title">Profesores Registrados</h2>
                     <div className="selector-container">
-                        <label htmlFor="carrera">Carrera:</label>
+                        <label htmlFor="carrera-izq">Carrera:</label>
                         <select
-                            id="carrera"
-                            value={selectedCarrera}
-                            onChange={(e) => setSelectedCarrera(e.target.value)}
+                            id="carrera-izq"
+                            value={selectedCarreraIzq}
+                            onChange={(e) => setSelectedCarreraIzq(e.target.value)}
                         >
                             <option value="">Elegir carrera</option>
-                            {carreras.map((carrera, index) => (
+                            {carrerasIzq.map((carrera, index) => (
                                 <option key={index} value={carrera}>
                                     {carrera}
                                 </option>
@@ -86,15 +153,15 @@ const Profesores = () => {
                     </div>
 
                     <div className="selector-container">
-                        <label htmlFor="materia">Materia:</label>
+                        <label htmlFor="materia-izq">Materia:</label>
                         <select
-                            id="materia"
-                            value={selectedMateria}
-                            onChange={(e) => setSelectedMateria(e.target.value)}
-                            disabled={!selectedCarrera} // Desactiva el selector de materias si no hay carrera seleccionada
+                            id="materia-izq"
+                            value={selectedMateriaIzq}
+                            onChange={(e) => setSelectedMateriaIzq(e.target.value)}
+                            disabled={!selectedCarreraIzq}
                         >
                             <option value="">Elegir materia</option>
-                            {materias.map((materia, index) => (
+                            {materiasIzq.map((materia, index) => (
                                 <option key={index} value={materia.nombre}>
                                     {materia.nombre}
                                 </option>
@@ -102,7 +169,6 @@ const Profesores = () => {
                         </select>
                     </div>
 
-                    {/* Sección para mostrar los profesores */}
                     <div className="profesores-list">
                         <h3>Profesores:</h3>
                         <ul>
@@ -116,9 +182,63 @@ const Profesores = () => {
                         </ul>
                     </div>
                 </div>
+
+                {/* Contenedor derecho */}
                 <div className="right-container">
-                    <h2>Contenedor Derecho</h2>
-                    <p>Aquí puedes agregar contenido adicional.</p>
+                    <h2 className="title">Agregar Profesores</h2>
+                    <div className="selector-container">
+                        <label htmlFor="carrera-der">Carrera:</label>
+                        <select
+                            id="carrera-der"
+                            value={selectedCarreraDer}
+                            onChange={(e) => setSelectedCarreraDer(e.target.value)}
+                        >
+                            <option value="">Elegir carrera</option>
+                            {carrerasDer.map((carrera, index) => (
+                                <option key={index} value={carrera}>
+                                    {carrera}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div className="selector-container">
+                        <label htmlFor="materia-der">Materia:</label>
+                        <select
+                            id="materia-der"
+                            value={selectedMateriaDer}
+                            onChange={(e) => setSelectedMateriaDer(e.target.value)}
+                            disabled={!selectedCarreraDer}
+                        >
+                            <option value="">Elegir materia</option>
+                            {materiasDer.map((materia, index) => (
+                                <option key={index} value={materia.nombre}>
+                                    {materia.nombre}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div className="input-container">
+                        <label htmlFor="profesor-nombre">Nombre del Profesor:</label>
+                        <input
+                            type="text"
+                            id="profesor-nombre"
+                            value={newProfesorName}
+                            onChange={(e) => setNewProfesorName(e.target.value)}
+                        />
+                    </div>
+
+                    <button className="custom-button2" onClick={handleAddProfesor}>
+                        Agregar Profesor
+                    </button>
+
+                    {/* Notificación */}
+                    {notificationVisible && (
+                        <div className="notification">
+                            {notification}
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

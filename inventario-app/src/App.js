@@ -5,6 +5,9 @@ import Login from './Login';
 import Home from './Home';
 import Profesores from './Profesores';
 import RequestSummary from './RequestSummary';
+import EliminarProfesores from './EliminarProfesores';
+import Materiales from './Materiales'
+
 
 const App = () => {
     return (
@@ -15,6 +18,8 @@ const App = () => {
                 <Route path="/request-summary/:id" element={<RequestSummary />} /> {/* Ruta para mostrar el resumen */}
                 <Route path="/login" element={<Login />} />
                 <Route path="/profesores" element={<Profesores />} />
+                <Route path="/eliminar-profesores" element={<EliminarProfesores />} />
+                <Route path="/materiales" element={<Materiales />} />
             </Routes>
         </Router>
     );
