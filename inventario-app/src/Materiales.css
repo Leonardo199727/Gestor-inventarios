@@ -1,0 +1,198 @@
+/* Estilo para el top container */
+.top-container {
+    width: 100%;
+    height: 2cm;
+    background-color: #6c757d;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    box-sizing: border-box;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    justify-content: flex-start;
+}
+
+/* Botón de regresar */
+.red-button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+.red-button:hover {
+    background-color: #c82333;
+}
+
+/* Contenedor principal */
+.page-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    padding-top: 2cm;
+    overflow: hidden;
+}
+
+/* Contenedor que divide la página en 3 secciones iguales */
+.content-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    flex-grow: 1;
+    overflow-y:auto ;
+}
+
+/* Estilo de cada sección */
+.section {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Alinea el contenido al inicio */
+    align-items: center;
+    border: 1px solid #ccc;
+    padding: 20px;
+    font-size: 18px;
+    text-align: center;
+    background-color: #f8f9fa;
+}
+
+/* Estilo de la etiqueta como título */
+.section-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+    padding: 10px;
+    text-align: center;
+}
+
+/* Estilo para los inputs y botón de agregar */
+input {
+    margin: 10px 0;
+    padding: 8px;
+    width: 80%; /* Ajusta el tamaño del campo */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Botón de modificar */
+.modify-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.modify-button:hover {
+    background-color: #0069d9;
+}
+
+.add-button {
+    
+    background-color: #2eaa12;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    margin-top: 10px;
+
+}
+
+/* Lista desplegable de materiales encontrados */
+.material-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 10px 0;
+    width: 80%;
+}
+
+.material-list li {
+    padding: 10px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    background-color: #f8f9fa;
+    margin-bottom: 5px;
+}
+
+.material-list li:hover {
+    background-color: #e9ecef;
+}
+
+
+.material-container {
+    margin-top: 10px;
+    padding: 10px;
+    overflow-y: auto;
+    border: 1px solid #ccc; /* Agrega un borde si lo deseas */
+    border-radius: 5px; /* Redondea los bordes */
+}
+
+.material-item {
+    margin-bottom: 5px; /* Espacio entre los elementos */
+}
+
+#filter-material {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 8px;
+    width: 100%; /* Ajusta según tus necesidades */
+}
+
+
+.title {
+    width: 50%; /* Ajuste del ancho para cada título */
+    padding: 10px; /* Espaciado alrededor del texto */
+    text-align: left; /* Alinear el texto a la izquierda */
+}
+
+/* Ajusta el tamaño del contenedor de títulos para que coincida con el de materiales */
+.titles-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    font-weight: bold;
+    border-bottom: 2px solid #ccc; /* Línea debajo de los títulos */
+    padding: 10px; /* Agrega padding para que se vea mejor */
+    background-color: #f8f9fa; /* Asegura que el fondo coincida */
+}
+
+/* Asegúrate de que el contenedor de materiales tenga el mismo estilo */
+.material-container {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f8f9fa; /* Asegura que el fondo coincida */
+    /* Asegúrate de que tenga un ancho fijo si es necesario */
+    width: 100%; /* O ajusta según tus necesidades */
+}
+
+/* Mantén el estilo de los items de material */
+.material-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    padding: 10px 0; /* Espaciado vertical para igualar la altura */
+    border-bottom: 1px solid #eee; /* Línea debajo de cada material */
+}
+
+.no-materials {
+    display: flex; /* Usamos flexbox para dividir en dos */
+    justify-content: space-between; /* Espacio entre los elementos */
+    padding: 10px; /* Espaciado interno */
+    border: 1px solid #ccc; /* Puedes ajustar según lo necesites */
+    background-color: #f8f9fa; /* Fondo consistente */
+}
+
+.no-materials-item {
+    flex: 1; /* Cada item ocupa el mismo espacio */
+    text-align: center; /* Centra el texto si es necesario */
+}

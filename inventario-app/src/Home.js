@@ -42,7 +42,7 @@ const Home = () => {
     };
 
     
-    const handleGoToReportes = () => {
+    const handleGoToMateriales = () => {
         navigate('/materiales'); 
     };
 
@@ -62,7 +62,7 @@ const Home = () => {
                 <div className="button-group">
                     <button className="custom-button" onClick={handleGoToProfesores}>Agregar Profesores</button>
                     <button className="custom-button" onClick={handleGoToEliminarProfesores}>Eliminar Profesores</button>
-                    <button className="custom-button" onClick={handleGoToReportes}>Materiales</button>
+                    <button className="custom-button" onClick={handleGoToMateriales}>Materiales</button>
                     <button className="custom-button" onClick={handleGoToConfiguracion}></button>
                     <button className="custom-button" onClick={handleGoToEstadisticas}>Estadísticas</button>
                 </div>
